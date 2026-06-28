@@ -1,0 +1,32 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="b64Input">Input</label>
+            <textarea id="b64Input" class="form-textarea" placeholder="Enter text to encode or Base64 to decode..." rows="6"></textarea>
+        </div>
+        <div class="form-group">
+            <label>Action</label>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="b64Action" value="encode" checked /> Encode
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="b64Action" value="decode" /> Decode
+                </label>
+            </div>
+        </div>
+        <button class="btn-generate" id="generateBtn">Process</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">Result</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}
