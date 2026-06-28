@@ -1,0 +1,36 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="hashInput">Input</label>
+            <textarea id="hashInput" class="form-textarea" placeholder="Enter text to hash..." rows="6"></textarea>
+        </div>
+        <button class="btn-generate" id="generateBtn">Generate Hashes</button>
+    </div>
+
+    <div class="tool-output hash-output" id="output" style="display:none">
+        <div class="hash-item">
+            <div class="hash-label">MD5</div>
+            <div class="hash-value" id="hashMd5"></div>
+            <button class="btn-copy-hash" data-target="hashMd5">Copy</button>
+        </div>
+        <div class="hash-item">
+            <div class="hash-label">SHA1</div>
+            <div class="hash-value" id="hashSha1"></div>
+            <button class="btn-copy-hash" data-target="hashSha1">Copy</button>
+        </div>
+        <div class="hash-item">
+            <div class="hash-label">SHA256</div>
+            <div class="hash-value" id="hashSha256"></div>
+            <button class="btn-copy-hash" data-target="hashSha256">Copy</button>
+        </div>
+        <div class="hash-item">
+            <div class="hash-label">SHA512</div>
+            <div class="hash-value" id="hashSha512"></div>
+            <button class="btn-copy-hash" data-target="hashSha512">Copy</button>
+        </div>
+    </div>
+</div>
+{{end}}
