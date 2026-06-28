@@ -25,27 +25,22 @@ jobs:
                     username: ${{ secrets.DOCKER_USERNAME }}
                     password: ${{ secrets.DOCKER_PASSWORD }}
 
-            -   name: Extract metadata
-                id: meta
-                uses: docker/metadata-action@v5
-                with:
-                    images: ${{ secrets.DOCKER_USERNAME }}/dev-tools
-                    tags: |
-                        type=raw,value=latest,enable={{is_default_branch}}
-                        type=semver,pattern={{major}}.{{minor}}
+            -   name: Extract version from tag
+                id: version
+                run: echo "VERSION=${GITHUB_REF_NAME#v}" >> $GITHUB_OUTPUT
 
             -   name: Build and push Docker image
                 uses: docker/build-push-action@v5
                 with:
                     context: .
-                    push: ${{ github.event_name != 'pull_request' }}
+                    push: true
                     platforms: linux/amd64,linux/arm64
-                    tags: ${{ steps.meta.outputs.tags }}
-                    labels: ${{ steps.meta.outputs.labels }}
+                    tags: |
+                        ${{ secrets.DOCKER_USERNAME }}/dev-tools:latest
+                        ${{ secrets.DOCKER_USERNAME }}/dev-tools:${{ steps.version.outputs.VERSION }}
 
             -   name: Update Docker Hub description
                 uses: peter-evans/dockerhub-description@v4
-                if: github.event_name != 'pull_request'
                 with:
                     username: ${{ secrets.DOCKER_USERNAME }}
                     password: ${{ secrets.DOCKER_PASSWORD }}
