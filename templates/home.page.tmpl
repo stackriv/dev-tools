@@ -1,0 +1,31 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tools-grid">
+    <a href="/gitignore" class="tool-card">
+        <span class="tool-icon">🚫</span>
+        <h3>.gitignore Generator</h3>
+        <p>Generate a .gitignore file for your project based on language and framework.</p>
+    </a>
+    <a href="/license" class="tool-card">
+        <span class="tool-icon">📄</span>
+        <h3>License Generator</h3>
+        <p>Generate an open source license for your project.</p>
+    </a>
+    <a href="/packagejson" class="tool-card">
+        <span class="tool-icon">📦</span>
+        <h3>package.json Generator</h3>
+        <p>Generate a package.json file for your Node.js project.</p>
+    </a>
+    <a href="/env" class="tool-card">
+        <span class="tool-icon">🔐</span>
+        <h3>.env Generator</h3>
+        <p>Generate a .env template file with common environment variables.</p>
+    </a>
+    <a href="/dockerfile" class="tool-card">
+        <span class="tool-icon">🐳</span>
+        <h3>Dockerfile Generator</h3>
+        <p>Generate a production-ready Dockerfile for your application.</p>
+    </a>
+</div>
+{{end}}

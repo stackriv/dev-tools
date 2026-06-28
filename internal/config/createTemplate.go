@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"text/template"
 
-	"github.com/stackriv/go-web-starter/internal/business/model"
-	"github.com/stackriv/go-web-starter/internal/pkg"
+	"github.com/stackriv/dev-tools/internal/business/model"
+	"github.com/stackriv/dev-tools/internal/pkg"
 )
 
 // Global variable to hold the application configuration
@@ -25,7 +25,7 @@ func RenderTemplate(w http.ResponseWriter, tmplName string, tmplData interface{}
 
 	if !ok {
 		err := pkg.ErrorMessage(http.StatusInternalServerError)
-		RenderTemplate(w, "error", model.Starter{Error: model.ErrorData{Code: err["code"], Message: err["msg"]}})
+		RenderTemplate(w, "error", model.PageData{Error: model.ErrorData{Code: err["code"], Message: err["msg"]}})
 		return
 	}
 
@@ -33,13 +33,13 @@ func RenderTemplate(w http.ResponseWriter, tmplName string, tmplData interface{}
 	err := tmpl.Execute(buffer, tmplData)
 	if err != nil {
 		err := pkg.ErrorMessage(http.StatusInternalServerError)
-		RenderTemplate(w, "error", model.Starter{Error: model.ErrorData{Code: err["code"], Message: err["msg"]}})
+		RenderTemplate(w, "error", model.PageData{Error: model.ErrorData{Code: err["code"], Message: err["msg"]}})
 		return
 	}
 	_, err = buffer.WriteTo(w)
 	if err != nil {
 		err := pkg.ErrorMessage(http.StatusInternalServerError)
-		RenderTemplate(w, "error", model.Starter{Error: model.ErrorData{Code: err["code"]}})
+		RenderTemplate(w, "error", model.PageData{Error: model.ErrorData{Code: err["code"]}})
 		return
 	}
 }

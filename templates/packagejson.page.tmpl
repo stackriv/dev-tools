@@ -1,0 +1,68 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="pkgName">Package Name</label>
+            <input type="text" id="pkgName" class="form-input" placeholder="my-package" />
+        </div>
+        <div class="form-group">
+            <label for="pkgVersion">Version</label>
+            <input type="text" id="pkgVersion" class="form-input" value="1.0.0" />
+        </div>
+        <div class="form-group">
+            <label for="pkgDesc">Description</label>
+            <input type="text" id="pkgDesc" class="form-input" placeholder="A short description" />
+        </div>
+        <div class="form-group">
+            <label for="pkgAuthor">Author</label>
+            <input type="text" id="pkgAuthor" class="form-input" placeholder="Your Name <email@example.com>" />
+        </div>
+        <div class="form-group">
+            <label for="pkgLicense">License</label>
+            <select id="pkgLicense" class="form-select">
+                <option value="MIT">MIT</option>
+                <option value="Apache-2.0">Apache 2.0</option>
+                <option value="GPL-3.0">GPL v3</option>
+                <option value="ISC">ISC</option>
+                <option value="UNLICENSED">UNLICENSED</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Type</label>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="pkgType" value="" checked /> CommonJS
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="pkgType" value="module" /> ESModule
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Include</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includeScripts" checked /> Default scripts
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includeEngines" /> Node engines field
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="includePrivate" /> Private flag
+                </label>
+            </div>
+        </div>
+        <button class="btn-generate" id="generateBtn">Generate package.json</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">package.json</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}

@@ -1,0 +1,54 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="lang">Language / Runtime</label>
+            <select id="lang" class="form-select">
+                <option value="go">Go</option>
+                <option value="node">Node.js</option>
+                <option value="python">Python</option>
+                <option value="java">Java</option>
+                <option value="rust">Rust</option>
+                <option value="php">PHP</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="langVersion">Version</label>
+            <input type="text" id="langVersion" class="form-input" placeholder="e.g. 1.23, 20, 3.12" />
+        </div>
+        <div class="form-group">
+            <label for="port">Exposed Port</label>
+            <input type="number" id="port" class="form-input" value="8080" />
+        </div>
+        <div class="form-group">
+            <label for="workdir">Work Directory</label>
+            <input type="text" id="workdir" class="form-input" value="/app" />
+        </div>
+        <div class="form-group">
+            <label>Options</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="multistage" checked /> Multi-stage build
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="nonroot" checked /> Non-root user
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="healthcheck" /> Healthcheck
+                </label>
+            </div>
+        </div>
+        <button class="btn-generate" id="generateBtn">Generate Dockerfile</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">Dockerfile</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}

@@ -1,0 +1,61 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label>Language / Framework</label>
+            <div class="tags-container" id="tags">
+                <div class="tag-group">
+                    <p class="tag-group-label">Languages</p>
+                    <div class="tags">
+                        <button class="tag" data-value="Go">Go</button>
+                        <button class="tag" data-value="Python">Python</button>
+                        <button class="tag" data-value="Node">Node</button>
+                        <button class="tag" data-value="Java">Java</button>
+                        <button class="tag" data-value="Rust">Rust</button>
+                        <button class="tag" data-value="C++">C++</button>
+                    </div>
+                </div>
+                <div class="tag-group">
+                    <p class="tag-group-label">Frameworks</p>
+                    <div class="tags">
+                        <button class="tag" data-value="Angular">Angular</button>
+                        <button class="tag" data-value="React">React</button>
+                        <button class="tag" data-value="NextJS">Next.js</button>
+                        <button class="tag" data-value="Vue">Vue</button>
+                        <button class="tag" data-value="Laravel">Laravel</button>
+                        <button class="tag" data-value="Django">Django</button>
+                    </div>
+                </div>
+                <div class="tag-group">
+                    <p class="tag-group-label">Tools</p>
+                    <div class="tags">
+                        <button class="tag" data-value="Docker">Docker</button>
+                        <button class="tag" data-value="Terraform">Terraform</button>
+                        <button class="tag" data-value="Linux">Linux</button>
+                        <button class="tag" data-value="macOS">macOS</button>
+                        <button class="tag" data-value="Windows">Windows</button>
+                        <button class="tag" data-value="VSCode">VSCode</button>
+                        <button class="tag" data-value="JetBrains">JetBrains</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="selected-tags" id="selectedTags">
+            <p class="empty-state">No technologies selected yet</p>
+        </div>
+
+        <button class="btn-generate" id="generateBtn" disabled>Generate .gitignore</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">.gitignore</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}

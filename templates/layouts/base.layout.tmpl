@@ -5,15 +5,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/dark.css">
     <link rel="stylesheet" href="/statics/css/app.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
     <link rel="shortcut icon" href="/statics/img/1.ico" type="image/x-icon">
-    <title>Go Web Starter</title>
+    <title>{{ .Title }} - Stackriv Dev Tools</title>
 </head>
 
-<body>
-{{ block "content" . }}
-{{ end }}
+<body data-page="{{ .Page }}">
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <span class="logo">⚙️</span>
+            <div>
+                <h1>Dev Tools</h1>
+                <p>Stackriv</p>
+            </div>
+        </div>
+        <nav>
+            <a href="/" class='nav-item {{ if eq .Page "home" }}active{{ end }}'>
+                <span class="icon">🏠</span> Home
+            </a>
+            <a href="/gitignore" class='nav-item {{ if eq .Page "gitignore" }}active{{ end }}'>
+                <span class="icon">🚫</span> .gitignore
+            </a>
+            <a href="/license" class='nav-item {{ if eq .Page "license" }}active{{ end }}'>
+                <span class="icon">📄</span> License
+            </a>
+            <a href="/packagejson" class='nav-item {{ if eq .Page "packagejson" }}active{{ end }}'>
+                <span class="icon">📦</span> package.json
+            </a>
+            <a href="/env" class='nav-item {{ if eq .Page "env" }}active{{ end }}'>
+                <span class="icon">🔐</span> .env
+            </a>
+            <a href="/dockerfile" class='nav-item {{ if eq .Page "dockerfile" }}active{{ end }}'>
+                <span class="icon">🐳</span> Dockerfile
+            </a>
+        </nav>
+    </aside>
+
+    <main class="content">
+        <div class="page-header">
+            <h2>{{ .Title }}</h2>
+            <p class="page-desc">{{ .Description }}</p>
+        </div>
+        {{ block "content" . }}
+        {{ end }}
+    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+    <script src="/statics/js/app.js"></script>
 </body>
 
 </html>

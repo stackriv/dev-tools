@@ -1,5 +1,377 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
     user-select: none;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: #0f1117;
+    color: #e2e8f0;
+    min-height: 100vh;
+    display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 220px;
+    min-height: 100vh;
+    background: #1a1d2e;
+    border-right: 1px solid #2d3748;
+    padding: 1.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+}
+
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #2d3748;
+}
+
+.sidebar-header .logo {
+    font-size: 1.5rem;
+}
+
+.sidebar-header h1 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+}
+
+.sidebar-header p {
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    color: #94a3b8;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: background 0.15s, color 0.15s;
+}
+
+.nav-item:hover {
+    background: #252a3a;
+    color: #e2e8f0;
+}
+
+.nav-item.active {
+    background: #6366f1;
+    color: #fff;
+}
+
+/* Main content */
+.content {
+    margin-left: 220px;
+    flex: 1;
+    padding: 2rem;
+    max-width: 1100px;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.page-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.3rem;
+}
+
+.page-desc {
+    color: #64748b;
+    font-size: 0.9rem;
+}
+
+/* Home grid */
+.tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+}
+
+.tool-card {
+    background: #1e2130;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, transform 0.2s;
+    display: block;
+}
+
+.tool-card:hover {
+    border-color: #6366f1;
+    transform: translateY(-2px);
+}
+
+.tool-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+.tool-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.4rem;
+}
+
+.tool-card p {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.5;
+}
+
+/* Tool layout */
+.tool-layout {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+/* Form */
+.tool-form {
+    background: #1e2130;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #94a3b8;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.optional {
+    font-weight: 400;
+    color: #475569;
+    text-transform: none;
+    letter-spacing: 0;
+}
+
+.form-input,
+.form-select {
+    background: #0f1117;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+}
+
+.form-input:focus,
+.form-select:focus {
+    border-color: #6366f1;
+}
+
+.form-select option {
+    background: #1e2130;
+}
+
+/* Radio & Checkbox */
+.radio-group,
+.checkbox-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.radio-label,
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: #cbd5e1;
+    cursor: pointer;
+}
+
+/* Tags */
+.tag-group {
+    margin-bottom: 0.75rem;
+}
+
+.tag-group-label {
+    font-size: 0.75rem;
+    color: #475569;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.4rem;
+}
+
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+}
+
+.tag {
+    background: #0f1117;
+    border: 1px solid #2d3748;
+    color: #94a3b8;
+    border-radius: 6px;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.tag:hover {
+    border-color: #6366f1;
+    color: #e2e8f0;
+}
+
+.tag.selected {
+    background: #312e81;
+    border-color: #6366f1;
+    color: #a5b4fc;
+}
+
+/* Selected tags */
+.selected-tags {
+    background: #0f1117;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 0.6rem;
+    min-height: 42px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    align-items: center;
+}
+
+.selected-tag {
+    background: #312e81;
+    color: #a5b4fc;
+    border-radius: 4px;
+    padding: 0.2rem 0.5rem;
+    font-size: 0.8rem;
+}
+
+.empty-state {
+    color: #475569;
+    font-size: 0.85rem;
+}
+
+/* Generate button */
+.btn-generate {
+    background: #6366f1;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.75rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    width: 100%;
+}
+
+.btn-generate:hover {
+    background: #4f46e5;
+}
+
+.btn-generate:disabled {
+    background: #2d3748;
+    color: #475569;
+    cursor: not-allowed;
+}
+
+/* Output */
+.tool-output {
+    background: #1e2130;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.output-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: #252a3a;
+    border-bottom: 1px solid #2d3748;
+}
+
+.output-filename {
+    font-family: monospace;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.btn-copy {
+    background: none;
+    border: 1px solid #2d3748;
+    color: #94a3b8;
+    border-radius: 6px;
+    padding: 0.3rem 0.8rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+}
+
+.btn-copy:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+.btn-copy.copied {
+    border-color: #059669;
+    color: #34d399;
+}
+
+pre {
+    margin: 0;
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+pre code.hljs {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: transparent;
+    padding: 1.25rem;
+    display: block;
 }
