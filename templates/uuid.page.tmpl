@@ -1,0 +1,35 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="uuidCount">Number of UUIDs</label>
+            <input type="number" id="uuidCount" class="form-input" value="1" min="1" max="100" />
+        </div>
+        <div class="form-group">
+            <label>Format</label>
+            <div class="radio-group">
+                <label class="radio-label">
+                    <input type="radio" name="uuidFormat" value="standard" checked /> Standard (lowercase)
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="uuidFormat" value="upper" /> Uppercase
+                </label>
+                <label class="radio-label">
+                    <input type="radio" name="uuidFormat" value="nodash" /> No dashes
+                </label>
+            </div>
+        </div>
+        <button class="btn-generate" id="generateBtn">Generate UUID</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">UUIDs</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}
