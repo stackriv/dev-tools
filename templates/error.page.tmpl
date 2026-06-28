@@ -1,0 +1,7 @@
+{{ template "base" . }}
+
+{{ define "content" }}
+    <h1>Error Page</h1>
+    <h2>{{ index .Error.Code }}</h2>
+    <p>{{ index .Error.Message }}</p>
+{{ end }}
