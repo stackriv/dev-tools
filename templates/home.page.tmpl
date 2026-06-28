@@ -1,6 +1,7 @@
 {{ template "base" . }}
 
 {{define "content"}}
+<div class="section-title">Generators</div>
 <div class="tools-grid">
     <a href="/gitignore" class="tool-card">
         <span class="tool-icon">🚫</span>
@@ -26,6 +27,25 @@
         <span class="tool-icon">🐳</span>
         <h3>Dockerfile Generator</h3>
         <p>Generate a production-ready Dockerfile for your application.</p>
+    </a>
+</div>
+
+<div class="section-title">Utilities</div>
+<div class="tools-grid">
+    <a href="/uuid" class="tool-card">
+        <span class="tool-icon">🔑</span>
+        <h3>UUID Generator</h3>
+        <p>Generate random UUIDs v4 — single or bulk.</p>
+    </a>
+    <a href="/base64" class="tool-card">
+        <span class="tool-icon">🔄</span>
+        <h3>Base64 Encoder/Decoder</h3>
+        <p>Encode or decode Base64 strings locally.</p>
+    </a>
+    <a href="/hash" class="tool-card">
+        <span class="tool-icon">#️⃣</span>
+        <h3>Hash Generator</h3>
+        <p>Generate MD5, SHA1, SHA256 and SHA512 hashes.</p>
     </a>
 </div>
 {{end}}

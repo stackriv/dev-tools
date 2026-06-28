@@ -24,6 +24,7 @@
             <a href="/" class='nav-item {{ if eq .Page "home" }}active{{ end }}'>
                 <span class="icon">🏠</span> Home
             </a>
+            <p class="nav-section">Generators</p>
             <a href="/gitignore" class='nav-item {{ if eq .Page "gitignore" }}active{{ end }}'>
                 <span class="icon">🚫</span> .gitignore
             </a>
@@ -38,6 +39,16 @@
             </a>
             <a href="/dockerfile" class='nav-item {{ if eq .Page "dockerfile" }}active{{ end }}'>
                 <span class="icon">🐳</span> Dockerfile
+            </a>
+            <p class="nav-section">Utilities</p>
+            <a href="/uuid" class='nav-item {{if eq .Page "uuid"}}active{{end}}'>
+                <span>🔑</span> UUID
+            </a>
+            <a href="/base64" class='nav-item {{if eq .Page "base64"}}active{{end}}'>
+                <span>🔄</span> Base64
+            </a>
+            <a href="/hash" class='nav-item {{if eq .Page "hash"}}active{{end}}'>
+                <span>#️⃣</span> Hash
             </a>
         </nav>
     </aside>

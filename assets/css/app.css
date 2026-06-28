@@ -375,3 +375,104 @@ pre code.hljs {
     padding: 1.25rem;
     display: block;
 }
+
+/* Nav sections */
+.nav-section {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #475569;
+    padding: 0.75rem 0.75rem 0.25rem;
+    font-weight: 600;
+}
+
+/* Section title home */
+.section-title {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #475569;
+    font-weight: 600;
+    margin: 1.5rem 0 0.75rem;
+}
+
+.section-title:first-child {
+    margin-top: 0;
+}
+
+/* Textarea */
+.form-textarea {
+    background: #0f1117;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    color: #e2e8f0;
+    font-size: 0.9rem;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+    resize: vertical;
+}
+
+.form-textarea:focus {
+    border-color: #6366f1;
+}
+
+/* Hash output */
+.hash-output {
+    background: #1e2130;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.hash-item {
+    display: grid;
+    grid-template-columns: 80px 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid #1a1f2e;
+}
+
+.hash-item:last-child {
+    border-bottom: none;
+}
+
+.hash-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #6366f1;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.hash-value {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    color: #cbd5e1;
+    word-break: break-all;
+}
+
+.btn-copy-hash {
+    background: none;
+    border: 1px solid #2d3748;
+    color: #94a3b8;
+    border-radius: 6px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+}
+
+.btn-copy-hash:hover {
+    border-color: #6366f1;
+    color: #6366f1;
+}
+
+.btn-copy-hash.copied {
+    border-color: #059669;
+    color: #34d399;
+}

@@ -38,6 +38,12 @@ func run(args []string) {
 		http.HandleFunc("/api/env", controller.GenerateEnv)
 		http.HandleFunc("/dockerfile", controller.DockerfileHandler)
 		http.HandleFunc("/api/dockerfile", controller.GenerateDockerfile)
+		http.HandleFunc("/uuid", controller.UUID)
+		http.HandleFunc("/api/uuid", controller.GenerateUUID)
+		http.HandleFunc("/base64", controller.Base64Handler)
+		http.HandleFunc("/api/base64", controller.ProcessBase64)
+		http.HandleFunc("/hash", controller.Hash)
+		http.HandleFunc("/api/hash", controller.GenerateHash)
 
 		fmt.Println("Server is running on port http://127.0.0.1:" + appConfig.Port)
 		err = http.ListenAndServe(":"+appConfig.Port, nil)
