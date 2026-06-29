@@ -23,7 +23,7 @@ func Hash(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		config.RenderTemplate(w, "uuid", model.PageData{
+		config.RenderTemplate(w, "hash", model.PageData{
 			Title:       "Hash Generator",
 			Description: "Generate MD5, SHA1, SHA256 and SHA512 hashes.",
 			Page:        "hash",

@@ -21,7 +21,7 @@ func Base64Handler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		config.RenderTemplate(w, "uuid", model.PageData{
+		config.RenderTemplate(w, "base64", model.PageData{
 			Title:       "Base64 Encoder / Decoder",
 			Description: "Encode or decode Base64 strings.",
 			Page:        "base64",
