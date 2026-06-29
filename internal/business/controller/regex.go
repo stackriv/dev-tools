@@ -78,43 +78,34 @@ func TestRegex(w http.ResponseWriter, r *http.Request) {
 
 	var matches []model.RegexMatch
 
-	if body.Flags.Global {
-		allMatches := re.FindAllStringSubmatchIndex(body.Input, -1)
-		for _, loc := range allMatches {
-			match := body.Input[loc[0]:loc[1]]
-			var groups []string
-			for i := 2; i < len(loc); i += 2 {
-				if loc[i] >= 0 {
-					groups = append(groups, body.Input[loc[i]:loc[i+1]])
-				} else {
-					groups = append(groups, "")
-				}
+	process := func(loc []int) {
+		if loc == nil {
+			return
+		}
+		match := body.Input[loc[0]:loc[1]]
+		groups := make([]string, 0, (len(loc)-2)/2)
+		for i := 2; i < len(loc); i += 2 {
+			if loc[i] >= 0 {
+				groups = append(groups, body.Input[loc[i]:loc[i+1]])
+			} else {
+				groups = append(groups, "")
 			}
-			matches = append(matches, model.RegexMatch{
-				Match:  match,
-				Groups: groups,
-				Start:  loc[0],
-				End:    loc[1],
-			})
+		}
+		matches = append(matches, model.RegexMatch{
+			Match:  match,
+			Groups: groups,
+			Start:  loc[0],
+			End:    loc[1],
+		})
+	}
+
+	if body.Flags.Global {
+		for _, loc := range re.FindAllStringSubmatchIndex(body.Input, -1) {
+			process(loc)
 		}
 	} else {
-		loc := re.FindStringSubmatchIndex(body.Input)
-		if loc != nil {
-			match := body.Input[loc[0]:loc[1]]
-			var groups []string
-			for i := 2; i < len(loc); i += 2 {
-				if loc[i] >= 0 {
-					groups = append(groups, body.Input[loc[i]:loc[i+1]])
-				} else {
-					groups = append(groups, "")
-				}
-			}
-			matches = append(matches, model.RegexMatch{
-				Match:  match,
-				Groups: groups,
-				Start:  loc[0],
-				End:    loc[1],
-			})
+		if loc := re.FindStringSubmatchIndex(body.Input); loc != nil {
+			process(loc)
 		}
 	}
 

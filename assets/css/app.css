@@ -1,8 +1,8 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
     user-select: none;
+    box-sizing: border-box;
 }
 
 body {
@@ -475,4 +475,116 @@ pre code.hljs {
 .btn-copy-hash.copied {
     border-color: #059669;
     color: #34d399;
+}
+
+/* JWT */
+.jwt-section {
+    background: #1e2130;
+    border: 1px solid #2d3748;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.jwt-section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    background: #252a3a;
+    border-bottom: 1px solid #2d3748;
+}
+
+.jwt-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+}
+
+.jwt-header    { background: #1e3a5f; color: #60a5fa; }
+.jwt-payload   { background: #064e3b; color: #6ee7b7; }
+.jwt-signature { background: #4c0519; color: #fca5a5; }
+
+.jwt-pre {
+    padding: 1rem;
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    overflow-x: auto;
+    white-space: pre-wrap;
+    word-break: break-all;
+    margin: 0;
+}
+
+/* Regex */
+.regex-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.regex-slash {
+    color: #6366f1;
+    font-size: 1.2rem;
+    font-family: monospace;
+    font-weight: 700;
+}
+
+.regex-input {
+    flex: 1;
+}
+
+.regex-result-header {
+    margin-bottom: 0.75rem;
+}
+
+.regex-count {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #6366f1;
+}
+
+.regex-matches {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.regex-match {
+    background: #1e2130;
+    border: 1px solid #2d3748;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.regex-match-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.4rem;
+    font-size: 0.75rem;
+    color: #64748b;
+}
+
+.regex-match-value {
+    font-family: 'Cascadia Code', 'Fira Code', monospace;
+    font-size: 0.9rem;
+    color: #6ee7b7;
+    background: #064e3b;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+.regex-groups {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #64748b;
+}
+
+.regex-group {
+    font-family: monospace;
+    color: #fbbf24;
 }

@@ -44,8 +44,12 @@ func run(args []string) {
 		http.HandleFunc("/api/base64", controller.ProcessBase64)
 		http.HandleFunc("/hash", controller.Hash)
 		http.HandleFunc("/api/hash", controller.GenerateHash)
+		http.HandleFunc("/jwt", controller.JWT)
+		http.HandleFunc("/api/jwt", controller.DecodeJWT)
+		http.HandleFunc("/regex", controller.Regex)
+		http.HandleFunc("/api/regex", controller.TestRegex)
 
-		fmt.Println("Server is running on port http://127.0.0.1:" + appConfig.Port)
+		fmt.Println("Stackriv Dev Tools running on port http://127.0.0.1:" + appConfig.Port)
 		err = http.ListenAndServe(":"+appConfig.Port, nil)
 		if err != nil {
 			panic(err)

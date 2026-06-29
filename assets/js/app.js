@@ -294,3 +294,142 @@ if (page === 'hash') {
         });
     }
 }
+
+// ─── JWT ─────────────────────────────────────────────────────────────────────
+
+if (page === 'jwt') {
+    const btn = document.getElementById('generateBtn');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            const token = document.getElementById('jwtInput')?.value || '';
+            if (!token) return;
+
+            try {
+                const res = await fetch('/api/jwt', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token }),
+                });
+                const data = await res.json();
+
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+
+                const output = document.getElementById('output');
+                if (output) output.style.display = 'block';
+
+                const setAndHighlight = (id, content) => {
+                    const el = document.getElementById(id);
+                    if (!el) return;
+                    el.textContent = content;
+                    if (window.hljs && el.classList.contains('language-json')) {
+                        el.removeAttribute('data-highlighted');
+                        hljs.highlightElement(el);
+                    }
+                };
+
+                setAndHighlight('jwtHeader', data.header || '');
+                setAndHighlight('jwtPayload', data.payload || '');
+
+                const sig = document.getElementById('jwtSignature');
+                if (sig) sig.textContent = data.signature || '';
+
+                // Copy buttons
+                document.querySelectorAll('.btn-copy-hash').forEach(copyBtn => {
+                    copyBtn.onclick = () => {
+                        const targetId = copyBtn.dataset.target;
+                        const text = document.getElementById(targetId)?.textContent || '';
+                        navigator.clipboard.writeText(text).then(() => {
+                            copyBtn.textContent = 'Copied!';
+                            copyBtn.classList.add('copied');
+                            setTimeout(() => {
+                                copyBtn.textContent = 'Copy';
+                                copyBtn.classList.remove('copied');
+                            }, 2000);
+                        });
+                    };
+                });
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+}
+
+// ─── Regex ───────────────────────────────────────────────────────────────────
+
+if (page === 'regex') {
+    const btn = document.getElementById('generateBtn');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            const pattern = document.getElementById('regexPattern')?.value || '';
+            const input   = document.getElementById('regexInput')?.value || '';
+            if (!pattern) return;
+
+            try {
+                const res = await fetch('/api/regex', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        pattern,
+                        input,
+                        flags: {
+                            global:      document.getElementById('flagGlobal')?.checked ?? true,
+                            insensitive: document.getElementById('flagInsensitive')?.checked ?? false,
+                            multiline:   document.getElementById('flagMultiline')?.checked ?? false,
+                        },
+                    }),
+                });
+                const data = await res.json();
+
+                if (data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+
+                const output = document.getElementById('output');
+                if (output) output.style.display = 'block';
+
+                const countEl = document.getElementById('regexCount');
+                if (countEl) {
+                    countEl.textContent = `${data.count} match${data.count !== 1 ? 'es' : ''}`;
+                }
+
+                const matchesEl = document.getElementById('regexMatches');
+                if (!matchesEl) return;
+
+                if (!data.matches || data.matches.length === 0) {
+                    matchesEl.innerHTML = '<p style="color:#64748b;font-size:0.9rem;">No matches found.</p>';
+                    return;
+                }
+
+                matchesEl.innerHTML = data.matches.map((m, i) => `
+                    <div class="regex-match">
+                        <div class="regex-match-header">
+                            <span>Match ${i + 1}</span>
+                            <span>position ${m.start}–${m.end}</span>
+                        </div>
+                        <span class="regex-match-value">${escapeHtml(m.match)}</span>
+                        ${m.groups && m.groups.length > 0 ? `
+                            <div class="regex-groups">
+                                Groups: ${m.groups.map((g, gi) => `<span class="regex-group">$${gi + 1}: "${escapeHtml(g)}"</span>`).join(', ')}
+                            </div>
+                        ` : ''}
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        });
+    }
+}
+
+function escapeHtml(str) {
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}

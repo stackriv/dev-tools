@@ -50,6 +50,13 @@
             <a href="/hash" class='nav-item {{if eq .Page "hash"}}active{{end}}'>
                 <span>#️⃣</span> Hash
             </a>
+            <a href="/jwt" class='nav-item {{if eq .Page "jwt"}}active{{end}}'>
+                <span>🔓</span> JWT
+            </a>
+            <a href="/regex" class='nav-item {{if eq .Page "regex"}}active{{end}}'>
+                <span>🔍</span> Regex
+            </a>
+
         </nav>
     </aside>
 
@@ -61,6 +68,7 @@
         {{ block "content" . }}
         {{ end }}
     </main>
+    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="/statics/js/app.js"></script>
 </body>
