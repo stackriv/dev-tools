@@ -1,0 +1,37 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="jwtInput">JWT Token</label>
+            <textarea id="jwtInput" class="form-textarea" placeholder="Paste your JWT token here..." rows="6"></textarea>
+        </div>
+        <button class="btn-generate" id="generateBtn">Decode</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div class="jwt-section">
+            <div class="jwt-section-header">
+                <span class="jwt-badge jwt-header">Header</span>
+                <button class="btn-copy-hash" data-target="jwtHeader">Copy</button>
+            </div>
+            <pre id="jwtHeader" class="jwt-pre language-json"></pre>
+        </div>
+        <div class="jwt-section">
+            <div class="jwt-section-header">
+                <span class="jwt-badge jwt-payload">Payload</span>
+                <button class="btn-copy-hash" data-target="jwtPayload">Copy</button>
+            </div>
+            <pre id="jwtPayload" class="jwt-pre language-json"></pre>
+        </div>
+        <div class="jwt-section">
+            <div class="jwt-section-header">
+                <span class="jwt-badge jwt-signature">Signature</span>
+                <button class="btn-copy-hash" data-target="jwtSignature">Copy</button>
+            </div>
+            <pre id="jwtSignature" class="jwt-pre"></pre>
+        </div>
+    </div>
+</div>
+{{end}}
