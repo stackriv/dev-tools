@@ -1,0 +1,42 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="regexPattern">Pattern</label>
+            <div class="regex-input-wrap">
+                <span class="regex-slash">/</span>
+                <input type="text" id="regexPattern" class="form-input regex-input" placeholder="[a-z]+" />
+                <span class="regex-slash">/</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Flags</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="flagGlobal" checked /> Global (g)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="flagInsensitive" /> Case insensitive (i)
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" id="flagMultiline" /> Multiline (m)
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="regexInput">Test String</label>
+            <textarea id="regexInput" class="form-textarea" placeholder="Enter your test string here..." rows="6"></textarea>
+        </div>
+        <button class="btn-generate" id="generateBtn">Test</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div class="regex-result-header">
+            <span class="regex-count" id="regexCount">0 matches</span>
+        </div>
+        <div id="regexMatches" class="regex-matches"></div>
+    </div>
+</div>
+{{end}}
