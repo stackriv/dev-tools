@@ -1,0 +1,17 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="sslDomain">Domain</label>
+            <input type="text" id="sslDomain" class="form-input" placeholder="example.com" />
+        </div>
+        <button class="btn-generate" id="generateBtn">Check SSL</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div id="sslResult" class="ssl-result"></div>
+    </div>
+</div>
+{{end}}
