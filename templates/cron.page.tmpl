@@ -1,0 +1,60 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label>Expression</label>
+            <div class="cron-inputs">
+                <div class="cron-field">
+                    <input type="text" id="cronMinute" class="form-input cron-part" value="*" />
+                    <span class="cron-label">Minute</span>
+                </div>
+                <div class="cron-field">
+                    <input type="text" id="cronHour" class="form-input cron-part" value="*" />
+                    <span class="cron-label">Hour</span>
+                </div>
+                <div class="cron-field">
+                    <input type="text" id="cronDay" class="form-input cron-part" value="*" />
+                    <span class="cron-label">Day</span>
+                </div>
+                <div class="cron-field">
+                    <input type="text" id="cronMonth" class="form-input cron-part" value="*" />
+                    <span class="cron-label">Month</span>
+                </div>
+                <div class="cron-field">
+                    <input type="text" id="cronWeekday" class="form-input cron-part" value="*" />
+                    <span class="cron-label">Weekday</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Presets</label>
+            <div class="tags">
+                <button class="tag" data-cron="* * * * *">Every minute</button>
+                <button class="tag" data-cron="0 * * * *">Every hour</button>
+                <button class="tag" data-cron="0 0 * * *">Every day</button>
+                <button class="tag" data-cron="0 0 * * 0">Every Sunday</button>
+                <button class="tag" data-cron="0 0 1 * *">Every month</button>
+                <button class="tag" data-cron="0 9 * * 1-5">Weekdays 9AM</button>
+                <button class="tag" data-cron="*/5 * * * *">Every 5 min</button>
+                <button class="tag" data-cron="0 3 1 * *">Monthly 3AM</button>
+            </div>
+        </div>
+
+        <button class="btn-generate" id="generateBtn">Validate & Describe</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div class="cron-result">
+            <div class="cron-expression-display" id="cronExpressionDisplay"></div>
+            <div class="cron-description" id="cronDescription"></div>
+        </div>
+        <div class="cron-next">
+            <p class="cron-next-title">Next 5 runs</p>
+            <ul id="cronNextRuns" class="cron-runs-list"></ul>
+        </div>
+    </div>
+</div>
+{{end}}
