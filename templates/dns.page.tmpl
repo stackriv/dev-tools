@@ -1,0 +1,28 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="dnsDomain">Domain</label>
+            <input type="text" id="dnsDomain" class="form-input" placeholder="example.com" />
+        </div>
+        <div class="form-group">
+            <label>Record Types</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" class="dns-type" value="A" checked /> A</label>
+                <label class="checkbox-label"><input type="checkbox" class="dns-type" value="AAAA" checked /> AAAA</label>
+                <label class="checkbox-label"><input type="checkbox" class="dns-type" value="MX" checked /> MX</label>
+                <label class="checkbox-label"><input type="checkbox" class="dns-type" value="TXT" checked /> TXT</label>
+                <label class="checkbox-label"><input type="checkbox" class="dns-type" value="NS" checked /> NS</label>
+                <label class="checkbox-label"><input type="checkbox" class="dns-type" value="CNAME" checked /> CNAME</label>
+            </div>
+        </div>
+        <button class="btn-generate" id="generateBtn">Lookup</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div id="dnsResults" class="dns-results"></div>
+    </div>
+</div>
+{{end}}
