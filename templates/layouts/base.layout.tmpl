@@ -40,6 +40,7 @@
             <a href="/dockerfile" class='nav-item {{ if eq .Page "dockerfile" }}active{{ end }}'>
                 <span class="icon">🐳</span> Dockerfile
             </a>
+
             <p class="nav-section">Utilities</p>
             <a href="/uuid" class='nav-item {{if eq .Page "uuid"}}active{{end}}'>
                 <span>🔑</span> UUID
@@ -57,6 +58,16 @@
                 <span>🔍</span> Regex
             </a>
 
+            <p class="nav-section">Infrastructure</p>
+            <a href="/cron" class='nav-item {{if eq .Page "cron"}}active{{end}}'>
+                <span>⏰</span> Cron Builder
+            </a>
+            <a href="/dns" class='nav-item {{if eq .Page "dns"}}active{{end}}'>
+                <span>🌐</span> DNS Lookup
+            </a>
+            <a href="/ssl" class='nav-item {{if eq .Page "ssl"}}active{{end}}'>
+                <span>🔒</span> SSL Checker
+            </a>
         </nav>
     </aside>
 
@@ -68,7 +79,7 @@
         {{ block "content" . }}
         {{ end }}
     </main>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
     <script src="/statics/js/app.js"></script>
 </body>

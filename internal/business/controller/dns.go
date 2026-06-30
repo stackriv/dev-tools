@@ -47,6 +47,7 @@ func LookupDNS(w http.ResponseWriter, r *http.Request) {
 		err := pkg.ErrorMessage(http.StatusBadRequest)
 		config.RenderTemplate(w, "error", model.PageData{Error: model.ErrorData{Code: err["code"], Message: "domain required"}})
 		fmt.Println(err)
+		return
 	}
 
 	if len(body.Types) == 0 {

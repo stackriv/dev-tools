@@ -433,3 +433,190 @@ function escapeHtml(str) {
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
 }
+
+// ─── Cron ────────────────────────────────────────────────────────────────────
+
+if (page === 'cron') {
+    // Presets
+    document.querySelectorAll('.tag[data-cron]').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const parts = tag.dataset.cron.split(' ');
+            if (parts.length === 5) {
+                document.getElementById('cronMinute').value   = parts[0];
+                document.getElementById('cronHour').value     = parts[1];
+                document.getElementById('cronDay').value      = parts[2];
+                document.getElementById('cronMonth').value    = parts[3];
+                document.getElementById('cronWeekday').value  = parts[4];
+            }
+        });
+    });
+
+    const btn = document.getElementById('generateBtn');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            const expression = [
+                document.getElementById('cronMinute')?.value   || '*',
+                document.getElementById('cronHour')?.value     || '*',
+                document.getElementById('cronDay')?.value      || '*',
+                document.getElementById('cronMonth')?.value    || '*',
+                document.getElementById('cronWeekday')?.value  || '*',
+            ].join(' ');
+
+            try {
+                const res = await fetch('/api/cron', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ expression }),
+                });
+                const data = await res.json();
+
+                if (data.error) { alert('Error: ' + data.error); return; }
+
+                const output = document.getElementById('output');
+                if (output) output.style.display = 'block';
+
+                const exprEl = document.getElementById('cronExpressionDisplay');
+                if (exprEl) exprEl.textContent = data.expression;
+
+                const descEl = document.getElementById('cronDescription');
+                if (descEl) descEl.textContent = data.description;
+
+                const runsEl = document.getElementById('cronNextRuns');
+                if (runsEl && data.next_runs) {
+                    runsEl.innerHTML = data.next_runs
+                        .map(r => `<li>${r}</li>`)
+                        .join('');
+                }
+            } catch (err) { console.error(err); }
+        });
+    }
+}
+
+// ─── DNS ─────────────────────────────────────────────────────────────────────
+
+if (page === 'dns') {
+    const btn = document.getElementById('generateBtn');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            const domain = document.getElementById('dnsDomain')?.value || '';
+            if (!domain) return;
+
+            const types = [...document.querySelectorAll('.dns-type:checked')]
+                .map(el => el.value);
+
+            try {
+                const res = await fetch('/api/dns', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domain, types }),
+                });
+                const data = await res.json();
+
+                if (data.error) { alert('Error: ' + data.error); return; }
+
+                const output = document.getElementById('output');
+                if (output) output.style.display = 'block';
+
+                const resultsEl = document.getElementById('dnsResults');
+                if (!resultsEl) return;
+
+                resultsEl.innerHTML = types.map(type => {
+                    const r = data.results[type];
+                    if (!r) return '';
+
+                    let content = '';
+                    if (r.error) {
+                        content = `<div class="dns-error">⚠️ ${escapeHtml(r.error)}</div>`;
+                    } else if (!r.records || r.records.length === 0) {
+                        content = `<div class="dns-empty">No records found</div>`;
+                    } else {
+                        content = `<div class="dns-record-values">
+                            ${r.records.map(v => `<div class="dns-value">${escapeHtml(v)}</div>`).join('')}
+                        </div>`;
+                    }
+
+                    return `
+                        <div class="dns-record">
+                            <div class="dns-record-header">
+                                <span class="dns-type-badge">${type}</span>
+                                <span class="dns-count">${r.records?.length || 0} record(s)</span>
+                            </div>
+                            ${content}
+                        </div>
+                    `;
+                }).join('');
+            } catch (err) { console.error(err); }
+        });
+    }
+}
+
+// ─── SSL ─────────────────────────────────────────────────────────────────────
+
+if (page === 'ssl') {
+    const btn = document.getElementById('generateBtn');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            const domain = document.getElementById('sslDomain')?.value || '';
+            if (!domain) return;
+
+            try {
+                const res = await fetch('/api/ssl', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ domain }),
+                });
+                const data = await res.json();
+
+                const output = document.getElementById('output');
+                if (output) output.style.display = 'block';
+
+                const resultEl = document.getElementById('sslResult');
+                if (!resultEl) return;
+
+                if (!data.valid) {
+                    resultEl.innerHTML = `
+                        <div class="ssl-status-bar expired">
+                            <span class="ssl-status-icon">❌</span>
+                            <div class="ssl-status-text">
+                                <h3>SSL Check Failed</h3>
+                                <p>${escapeHtml(data.error || 'Could not connect')}</p>
+                            </div>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const statusIcons = { valid: '✅', warning: '⚠️', critical: '🔴', expired: '❌' };
+                const statusLabels = {
+                    valid:    `Valid — ${data.days_left} days remaining`,
+                    warning:  `Expiring soon — ${data.days_left} days remaining`,
+                    critical: `Critical — only ${data.days_left} days remaining`,
+                    expired:  'Certificate has expired',
+                };
+
+                const sanItems = (data.san || [])
+                    .map(s => `<span class="ssl-san-item">${escapeHtml(s)}</span>`)
+                    .join('');
+
+                resultEl.innerHTML = `
+                    <div class="ssl-status-bar ${data.status}">
+                        <span class="ssl-status-icon">${statusIcons[data.status] || '🔒'}</span>
+                        <div class="ssl-status-text">
+                            <h3>${statusLabels[data.status] || data.status}</h3>
+                            <p>${escapeHtml(data.domain)}</p>
+                        </div>
+                    </div>
+                    <div class="ssl-fields">
+                        <div class="ssl-field"><span class="ssl-field-label">Subject</span><span class="ssl-field-value">${escapeHtml(data.subject)}</span></div>
+                        <div class="ssl-field"><span class="ssl-field-label">Issuer</span><span class="ssl-field-value">${escapeHtml(data.issuer)}</span></div>
+                        <div class="ssl-field"><span class="ssl-field-label">Issued</span><span class="ssl-field-value">${escapeHtml(data.issued_at)}</span></div>
+                        <div class="ssl-field"><span class="ssl-field-label">Expires</span><span class="ssl-field-value">${escapeHtml(data.expires_at)}</span></div>
+                        <div class="ssl-field"><span class="ssl-field-label">TLS Version</span><span class="ssl-field-value">${escapeHtml(data.tls_version)}</span></div>
+                        <div class="ssl-field"><span class="ssl-field-label">Serial</span><span class="ssl-field-value">${escapeHtml(data.serial)}</span></div>
+                    </div>
+                    ${sanItems ? `<div class="ssl-san"><div class="ssl-san-title">Subject Alternative Names</div><div class="ssl-san-list">${sanItems}</div></div>` : ''}
+                `;
+            } catch (err) { console.error(err); }
+        });
+    }
+}

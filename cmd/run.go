@@ -48,6 +48,12 @@ func run(args []string) {
 		http.HandleFunc("/api/jwt", controller.DecodeJWT)
 		http.HandleFunc("/regex", controller.Regex)
 		http.HandleFunc("/api/regex", controller.TestRegex)
+		http.HandleFunc("/cron", controller.Cron)
+		http.HandleFunc("/api/cron", controller.ValidateCron)
+		http.HandleFunc("/dns", controller.DNS)
+		http.HandleFunc("/api/dns", controller.LookupDNS)
+		http.HandleFunc("/ssl", controller.SSL)
+		http.HandleFunc("/api/ssl", controller.CheckSSL)
 
 		fmt.Println("Stackriv Dev Tools running on port http://127.0.0.1:" + appConfig.Port)
 		err = http.ListenAndServe(":"+appConfig.Port, nil)
