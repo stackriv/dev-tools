@@ -1,0 +1,80 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="readmeName">Project Name</label>
+            <input type="text" id="readmeName" class="form-input" placeholder="my-project" />
+        </div>
+        <div class="form-group">
+            <label for="readmeDesc">Description</label>
+            <input type="text" id="readmeDesc" class="form-input" placeholder="A short description of your project" />
+        </div>
+        <div class="form-group">
+            <label for="readmeAuthor">Author</label>
+            <input type="text" id="readmeAuthor" class="form-input" placeholder="Your Name" />
+        </div>
+        <div class="form-group">
+            <label for="readmeGithub">GitHub <span class="optional">(owner/repo or username)</span></label>
+            <input type="text" id="readmeGithub" class="form-input" placeholder="pro12x/my-project" />
+        </div>
+        <div class="form-group">
+            <label for="readmeLicense">License</label>
+            <select id="readmeLicense" class="form-select">
+                <option value="MIT">MIT</option>
+                <option value="Apache-2.0">Apache 2.0</option>
+                <option value="GPL-3.0">GPL v3</option>
+                <option value="ISC">ISC</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="readmeLang">Language</label>
+            <select id="readmeLang" class="form-select">
+                <option value="go">Go</option>
+                <option value="node">Node.js</option>
+                <option value="python">Python</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Badges</label>
+            <div class="tags">
+                <button class="tag" data-value="license">License</button>
+                <button class="tag" data-value="stars">Stars</button>
+                <button class="tag" data-value="issues">Issues</button>
+                <button class="tag" data-value="forks">Forks</button>
+                <button class="tag" data-value="go">Go version</button>
+                <button class="tag" data-value="node">Node version</button>
+                <button class="tag" data-value="docker">Docker pulls</button>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Sections</label>
+            <div class="checkbox-group">
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="overview" checked /> Overview</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="features" checked /> Features</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="installation" checked /> Installation</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="usage" checked /> Usage</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="docker" /> Docker</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="api" /> API Reference</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="contributing" checked /> Contributing</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="license" checked /> License</label>
+                <label class="checkbox-label"><input type="checkbox" class="readme-section" value="author" checked /> Author</label>
+            </div>
+        </div>
+        <div class="selected-tags" id="selectedTags">
+            <p class="empty-state">No badges selected</p>
+        </div>
+        <button class="btn-generate" id="generateBtn">Generate README</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">README.md</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}
