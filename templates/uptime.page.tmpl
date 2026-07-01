@@ -1,0 +1,36 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label>Services to monitor</label>
+            <div id="uptimeTargets">
+                <div class="uptime-target">
+                    <input type="text" class="form-input target-name" placeholder="Name (e.g. Portainer)" />
+                    <input type="text" class="form-input target-url" placeholder="URL (e.g. https://portainer.internal.stackriv.dev)" />
+                </div>
+            </div>
+            <button class="btn-add" id="addTargetBtn">+ Add service</button>
+        </div>
+
+        <div class="form-group">
+            <label>Quick add</label>
+            <div class="tags">
+                <button class="tag" data-name="Portainer" data-url="https://portainer.internal.stackriv.dev">Portainer</button>
+                <button class="tag" data-name="Filebrowser" data-url="https://filebrowser.internal.stackriv.dev">Filebrowser</button>
+                <button class="tag" data-name="Ghost" data-url="https://blog.stackriv.dev">Ghost</button>
+                <button class="tag" data-name="Grafana" data-url="https://grafana.internal.stackriv.dev">Grafana</button>
+            </div>
+        </div>
+
+        <button class="btn-generate" id="generateBtn">Check All</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div class="uptime-summary" id="uptimeSummary"></div>
+        <div id="uptimeResults" class="uptime-results"></div>
+        <p class="uptime-checked-at" id="uptimeCheckedAt"></p>
+    </div>
+</div>
+{{end}}
