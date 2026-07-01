@@ -52,7 +52,7 @@ func GenerateReadme(w http.ResponseWriter, r *http.Request) {
 	if err := json.NewDecoder(r.Body).Decode(&body); err != nil || body.Name == "" {
 		err1 := pkg.ErrorMessage(http.StatusBadRequest)
 		config.RenderTemplate(w, "error", model.PageData{Error: model.ErrorData{Code: err1["code"], Message: "project name required"}})
-		fmt.Println(http.StatusNotFound, "project name required")
+		fmt.Println(http.StatusBadRequest, "project name required")
 		return
 	}
 
