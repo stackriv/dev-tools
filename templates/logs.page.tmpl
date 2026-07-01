@@ -1,0 +1,47 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label for="logContainer">Container</label>
+            <select id="logContainer" class="form-select">
+                <option value="">Loading containers...</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="logLines">Lines</label>
+            <select id="logLines" class="form-select">
+                <option value="50">50</option>
+                <option value="100" selected>100</option>
+                <option value="200">200</option>
+                <option value="500">500</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="logSince">Since</label>
+            <select id="logSince" class="form-select">
+                <option value="">All time</option>
+                <option value="5m">Last 5 minutes</option>
+                <option value="30m">Last 30 minutes</option>
+                <option value="1h">Last 1 hour</option>
+                <option value="6h">Last 6 hours</option>
+                <option value="24h">Last 24 hours</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="logSearch">Filter <span class="optional">(keyword)</span></label>
+            <input type="text" id="logSearch" class="form-input" placeholder="error, warn, ..." />
+        </div>
+        <button class="btn-generate" id="generateBtn">Fetch Logs</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div class="logs-header">
+            <span class="logs-count" id="logsCount">0 lines</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <div id="logsContent" class="logs-content"></div>
+    </div>
+</div>
+{{end}}
