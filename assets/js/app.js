@@ -620,3 +620,85 @@ if (page === 'ssl') {
         });
     }
 }
+
+// ─── README ──────────────────────────────────────────────────────────────────
+
+if (page === 'readme') {
+    const selected = new Set();
+
+    document.querySelectorAll('.tag[data-value]').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const value = tag.dataset.value;
+            if (selected.has(value)) {
+                selected.delete(value);
+                tag.classList.remove('selected');
+            } else {
+                selected.add(value);
+                tag.classList.add('selected');
+            }
+            const container = document.getElementById('selectedTags');
+            if (container) {
+                container.innerHTML = selected.size === 0
+                    ? '<p class="empty-state">No badges selected</p>'
+                    : [...selected].map(v => `<span class="selected-tag">${v}</span>`).join('');
+            }
+        });
+    });
+
+    const btn = document.getElementById('generateBtn');
+    if (btn) {
+        btn.addEventListener('click', async () => {
+            const sections = [...document.querySelectorAll('.readme-section:checked')]
+                .map(el => el.value);
+            await postAndShow('/api/readme', {
+                name:        document.getElementById('readmeName')?.value || '',
+                description: document.getElementById('readmeDesc')?.value || '',
+                author:      document.getElementById('readmeAuthor')?.value || '',
+                github:      document.getElementById('readmeGithub')?.value || '',
+                license:     document.getElementById('readmeLicense')?.value || 'MIT',
+                language:    document.getElementById('readmeLang')?.value || 'go',
+                sections,
+                badges: [...selected],
+            });
+        });
+    }
+    setupCopy();
+}
+
+// ─── Docker Compose ──────────────────────────────────────────────────────────
+
+if (page === 'compose') {
+    const selected = new Set();
+    const generateBtn = document.getElementById('generateBtn');
+    const selectedTagsContainer = document.getElementById('selectedTags');
+
+    document.querySelectorAll('.tag[data-value]').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const value = tag.dataset.value;
+            if (selected.has(value)) {
+                selected.delete(value);
+                tag.classList.remove('selected');
+            } else {
+                selected.add(value);
+                tag.classList.add('selected');
+            }
+
+            if (selectedTagsContainer) {
+                selectedTagsContainer.innerHTML = selected.size === 0
+                    ? '<p class="empty-state">No services selected yet</p>'
+                    : [...selected].map(v => `<span class="selected-tag">${v}</span>`).join('');
+            }
+
+            if (generateBtn) generateBtn.disabled = selected.size === 0;
+        });
+    });
+
+    if (generateBtn) {
+        generateBtn.addEventListener('click', async () => {
+            const services = [...selected].map(name => ({ name, version: '' }));
+            const network = document.getElementById('composeNetwork')?.value || '';
+            await postAndShow('/api/compose', { services, network });
+        });
+    }
+    setupCopy();
+}

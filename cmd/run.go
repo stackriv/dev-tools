@@ -54,6 +54,10 @@ func run(args []string) {
 		http.HandleFunc("/api/dns", controller.LookupDNS)
 		http.HandleFunc("/ssl", controller.SSL)
 		http.HandleFunc("/api/ssl", controller.CheckSSL)
+		http.HandleFunc("/readme", controller.Readme)
+		http.HandleFunc("/api/readme", controller.GenerateReadme)
+		http.HandleFunc("/compose", controller.Compose)
+		http.HandleFunc("/api/compose", controller.GenerateCompose)
 
 		fmt.Println("Stackriv Dev Tools running on port http://127.0.0.1:" + appConfig.Port)
 		err = http.ListenAndServe(":"+appConfig.Port, nil)

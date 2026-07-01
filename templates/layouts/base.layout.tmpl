@@ -24,6 +24,7 @@
             <a href="/" class='nav-item {{ if eq .Page "home" }}active{{ end }}'>
                 <span class="icon">🏠</span> Home
             </a>
+
             <p class="nav-section">Generators</p>
             <a href="/gitignore" class='nav-item {{ if eq .Page "gitignore" }}active{{ end }}'>
                 <span class="icon">🚫</span> .gitignore
@@ -39,6 +40,12 @@
             </a>
             <a href="/dockerfile" class='nav-item {{ if eq .Page "dockerfile" }}active{{ end }}'>
                 <span class="icon">🐳</span> Dockerfile
+            </a>
+            <a href="/readme" class='nav-item {{ if eq .Page "readme" }}active{{ end }}'>
+                <span class="icon">📝</span> README
+            </a>
+            <a href="/compose" class='nav-item {{ if eq .Page "compose" }}active{{ end }}'>
+                <span class="icon">🗂️</span> Docker Compose
             </a>
 
             <p class="nav-section">Utilities</p>
