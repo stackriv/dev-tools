@@ -1,0 +1,61 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout">
+    <div class="tool-form">
+        <div class="form-group">
+            <label>Services</label>
+            <div class="tag-group">
+                <p class="tag-group-label">Databases</p>
+                <div class="tags">
+                    <button class="tag" data-value="postgres">PostgreSQL</button>
+                    <button class="tag" data-value="mysql">MySQL</button>
+                    <button class="tag" data-value="redis">Redis</button>
+                    <button class="tag" data-value="mongodb">MongoDB</button>
+                </div>
+            </div>
+            <div class="tag-group">
+                <p class="tag-group-label">Web / Proxy</p>
+                <div class="tags">
+                    <button class="tag" data-value="nginx">Nginx</button>
+                    <button class="tag" data-value="caddy">Caddy</button>
+                </div>
+            </div>
+            <div class="tag-group">
+                <p class="tag-group-label">Storage / Messaging</p>
+                <div class="tags">
+                    <button class="tag" data-value="minio">MinIO</button>
+                    <button class="tag" data-value="rabbitmq">RabbitMQ</button>
+                </div>
+            </div>
+            <div class="tag-group">
+                <p class="tag-group-label">Monitoring / Tools</p>
+                <div class="tags">
+                    <button class="tag" data-value="grafana">Grafana</button>
+                    <button class="tag" data-value="prometheus">Prometheus</button>
+                    <button class="tag" data-value="portainer">Portainer</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="selected-tags" id="selectedTags">
+            <p class="empty-state">No services selected yet</p>
+        </div>
+
+        <div class="form-group">
+            <label for="composeNetwork">Network name <span class="optional">(optional)</span></label>
+            <input type="text" id="composeNetwork" class="form-input" placeholder="mynetwork" />
+        </div>
+
+        <button class="btn-generate" id="generateBtn" disabled>Generate compose.yaml</button>
+    </div>
+
+    <div class="tool-output" id="output" style="display:none">
+        <div class="output-header">
+            <span class="output-filename">compose.yaml</span>
+            <button class="btn-copy" id="copyBtn">Copy</button>
+        </div>
+        <pre id="outputContent"></pre>
+    </div>
+</div>
+{{end}}
