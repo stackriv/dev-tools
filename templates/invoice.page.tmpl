@@ -1,0 +1,79 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="tool-layout wide">
+    <div class="tool-form">
+        <div class="form-group">
+            <label>Invoice Info</label>
+            <input type="text" id="invNumber" class="form-input" placeholder="Invoice # (e.g. INV-2026-001)" />
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label for="invDate">Date</label>
+                <input type="date" id="invDate" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label for="invDueDate">Due Date</label>
+                <input type="date" id="invDueDate" class="form-input" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="invCurrency">Currency</label>
+            <select id="invCurrency" class="form-select">
+                <option value="USD">USD ($)</option>
+                <option value="EUR">EUR (€)</option>
+                <option value="GBP">GBP (£)</option>
+                <option value="XOF">XOF (FCFA)</option>
+                <option value="CAD">CAD (CA$)</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>From (Your Info)</label>
+            <input type="text" id="fromName" class="form-input" placeholder="Your Name / Company" />
+            <input type="text" id="fromEmail" class="form-input" placeholder="Email" style="margin-top:0.4rem" />
+            <input type="text" id="fromAddress" class="form-input" placeholder="Address" style="margin-top:0.4rem" />
+            <input type="text" id="fromPhone" class="form-input" placeholder="Phone" style="margin-top:0.4rem" />
+        </div>
+
+        <div class="form-group">
+            <label>Bill To (Client Info)</label>
+            <input type="text" id="toName" class="form-input" placeholder="Client Name / Company" />
+            <input type="text" id="toEmail" class="form-input" placeholder="Email" style="margin-top:0.4rem" />
+            <input type="text" id="toAddress" class="form-input" placeholder="Address" style="margin-top:0.4rem" />
+        </div>
+
+        <div class="form-group">
+            <label>Items</label>
+            <div id="invoiceItems">
+                <div class="invoice-item-row">
+                    <input type="text" class="form-input item-desc" placeholder="Description" />
+                    <input type="number" class="form-input item-qty" placeholder="Qty" value="1" min="0" step="0.01" />
+                    <input type="number" class="form-input item-price" placeholder="Unit Price" min="0" step="0.01" />
+                </div>
+            </div>
+            <button class="btn-add" id="addItemBtn">+ Add item</button>
+        </div>
+
+        <div class="form-group">
+            <label for="invTax">Tax Rate (%)</label>
+            <input type="number" id="invTax" class="form-input" value="0" min="0" max="100" step="0.1" />
+        </div>
+
+        <div class="form-group">
+            <label for="invNotes">Notes <span class="optional">(optional)</span></label>
+            <textarea id="invNotes" class="form-textarea" rows="3" placeholder="Payment terms, bank details, etc."></textarea>
+        </div>
+
+        <button class="btn-generate" id="generateBtn">Generate Invoice</button>
+    </div>
+
+    <div id="output" style="display:none">
+        <div class="invoice-actions">
+            <button class="btn-copy" id="copyBtn">Copy HTML</button>
+            <button class="btn-print" id="printBtn">🖨️ Print / Save PDF</button>
+        </div>
+        <iframe id="invoiceFrame" class="invoice-frame"></iframe>
+    </div>
+</div>
+{{end}}
