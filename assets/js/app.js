@@ -1,11 +1,13 @@
 // ─── Utilitaires ────────────────────────────────────────────────────────────
 
 const langMap = {
-    gitignore:   'plaintext',
+    gitignore:   'yaml',
     license:     'plaintext',
     packagejson: 'json',
-    env:         'typescript',
+    env:         'yaml',
     dockerfile:  'typescript',
+    readme:      'markdown',
+    compose:     'yaml'
 };
 
 function showOutput(content) {
@@ -701,4 +703,364 @@ if (page === 'compose') {
         });
     }
     setupCopy();
+}
+
+// ─── Uptime Monitor ──────────────────────────────────────────────────────────
+
+if (page === 'uptime') {
+    // Quick add tags
+    document.querySelectorAll('.tag[data-name]').forEach(tag => {
+        tag.addEventListener('click', () => {
+            const name = tag.dataset.name;
+            const url  = tag.dataset.url;
+            addTarget(name, url);
+        });
+    });
+
+    document.getElementById('addTargetBtn')?.addEventListener('click', () => addTarget('', ''));
+
+    function addTarget(name, url) {
+        const container = document.getElementById('uptimeTargets');
+        if (!container) return;
+        const div = document.createElement('div');
+        div.className = 'uptime-target';
+        div.innerHTML = `
+            <input type="text" class="form-input target-name" placeholder="Name" value="${escapeHtml(name)}" />
+            <input type="text" class="form-input target-url" placeholder="URL" value="${escapeHtml(url)}" />
+        `;
+        container.appendChild(div);
+    }
+
+    document.getElementById('generateBtn')?.addEventListener('click', async () => {
+        const names = [...document.querySelectorAll('.target-name')].map(el => el.value.trim()).filter(Boolean);
+        const urls  = [...document.querySelectorAll('.target-url')].map(el => el.value.trim()).filter(Boolean);
+
+        const targets = names.map((name, i) => ({ name, url: urls[i] || '' }))
+            .filter(t => t.url);
+
+        if (targets.length === 0) return;
+
+        try {
+            const res = await fetch('/api/uptime', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ targets }),
+            });
+            const data = await res.json();
+
+            if (data.error) { alert('Error: ' + data.error); return; }
+
+            const output = document.getElementById('output');
+            if (output) output.style.display = 'block';
+
+            const upCount   = data.results.filter(r => r.status === 'up').length;
+            const downCount = data.results.filter(r => r.status === 'down').length;
+
+            const summaryEl = document.getElementById('uptimeSummary');
+            if (summaryEl) {
+                summaryEl.innerHTML = `
+                    <div class="uptime-stat total"><span class="uptime-stat-value">${data.results.length}</span><span class="uptime-stat-label">Total</span></div>
+                    <div class="uptime-stat up"><span class="uptime-stat-value">${upCount}</span><span class="uptime-stat-label">Up</span></div>
+                    <div class="uptime-stat down"><span class="uptime-stat-value">${downCount}</span><span class="uptime-stat-label">Down</span></div>
+                `;
+            }
+
+            const resultsEl = document.getElementById('uptimeResults');
+            if (resultsEl) {
+                resultsEl.innerHTML = data.results.map(r => {
+                    const codeClass = r.code >= 200 && r.code < 400 ? 'ok' : r.code === 0 ? 'err' : 'warn';
+                    return `
+                        <div class="uptime-item">
+                            <span class="uptime-dot ${r.status}"></span>
+                            <div>
+                                <div class="uptime-name">${escapeHtml(r.name)}</div>
+                                <div class="uptime-url">${escapeHtml(r.url)}</div>
+                                ${r.error ? `<div style="color:#f87171;font-size:0.75rem">${escapeHtml(r.error)}</div>` : ''}
+                            </div>
+                            <span class="uptime-ms">${r.ms}ms</span>
+                            <span class="uptime-code ${codeClass}">${r.code || r.status.toUpperCase()}</span>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            const checkedEl = document.getElementById('uptimeCheckedAt');
+            if (checkedEl) checkedEl.textContent = 'Checked at ' + data.checked_at;
+        } catch (err) { console.error(err); }
+    });
+}
+
+// ─── Log Viewer ──────────────────────────────────────────────────────────────
+
+if (page === 'logs') {
+    // Charger les conteneurs au démarrage
+    (async () => {
+        try {
+            const res = await fetch('/api/containers');
+            const data = await res.json();
+            const select = document.getElementById('logContainer');
+            if (!select) return;
+
+            if (data.error) {
+                select.innerHTML = `<option value="">⚠️ ${data.error}</option>`;
+                return;
+            }
+
+            select.innerHTML = data.containers.map(c =>
+                `<option value="${escapeHtml(c.name)}">${escapeHtml(c.name)} — ${escapeHtml(c.state)}</option>`
+            ).join('');
+        } catch (err) {
+            console.error(err);
+        }
+    })();
+
+    document.getElementById('generateBtn')?.addEventListener('click', async () => {
+        const container = document.getElementById('logContainer')?.value || '';
+        if (!container) return;
+
+        try {
+            const res = await fetch('/api/logs', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    container,
+                    lines:  parseInt(document.getElementById('logLines')?.value || '100'),
+                    search: document.getElementById('logSearch')?.value || '',
+                    since:  document.getElementById('logSince')?.value || '',
+                }),
+            });
+            const data = await res.json();
+
+            if (data.error) { alert('Error: ' + data.error); return; }
+
+            const output = document.getElementById('output');
+            if (output) output.style.display = 'block';
+
+            const countEl = document.getElementById('logsCount');
+            if (countEl) countEl.textContent = `${data.count} line${data.count !== 1 ? 's' : ''}`;
+
+            const contentEl = document.getElementById('logsContent');
+            if (!contentEl) return;
+
+            contentEl.innerHTML = (data.logs || []).map(line => {
+                const lower = line.toLowerCase();
+                let cls = '';
+                if (lower.includes('error') || lower.includes('err ') || lower.includes('fatal')) cls = 'error';
+                else if (lower.includes('warn')) cls = 'warn';
+                else if (lower.includes('info')) cls = 'info';
+
+                // Séparer timestamp du message (format docker: 2026-01-01T00:00:00Z message)
+                const tsMatch = line.match(/^(\d{4}-\d{2}-\d{2}T[\d:.]+Z)\s+(.*)$/s);
+                if (tsMatch) {
+                    return `<div class="log-line ${cls}"><span class="log-ts">${escapeHtml(tsMatch[1])}</span><span class="log-msg">${escapeHtml(tsMatch[2])}</span></div>`;
+                }
+                return `<div class="log-line ${cls}"><span class="log-msg">${escapeHtml(line)}</span></div>`;
+            }).join('');
+
+            // Scroll to bottom
+            contentEl.scrollTop = contentEl.scrollHeight;
+
+            // Copy all logs
+            const copyBtn = document.getElementById('copyBtn');
+            if (copyBtn) {
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText((data.logs || []).join('\n')).then(() => {
+                        copyBtn.textContent = 'Copied!';
+                        copyBtn.classList.add('copied');
+                        setTimeout(() => {
+                            copyBtn.textContent = 'Copy';
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    });
+                };
+            }
+        } catch (err) { console.error(err); }
+    });
+}
+
+// ─── Markdown Editor ─────────────────────────────────────────────────────────
+
+if (page === 'markdown') {
+    const editor  = document.getElementById('mdEditor');
+    const preview = document.getElementById('mdPreview');
+    const copyBtn = document.getElementById('copyBtn');
+    let debounceTimer;
+
+    async function renderMarkdown() {
+        const content = editor?.value || '';
+        try {
+            const res = await fetch('/api/markdown', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content }),
+            });
+            const data = await res.json();
+            if (preview && data.html !== undefined) {
+                preview.innerHTML = data.html;
+                // Highlight code blocks in preview
+                if (window.hljs) {
+                    preview.querySelectorAll('pre code').forEach(el => {
+                        el.removeAttribute('data-highlighted');
+                        hljs.highlightElement(el);
+                    });
+                }
+            }
+        } catch (err) { console.error(err); }
+    }
+
+    editor?.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(renderMarkdown, 300);
+    });
+
+    // Toolbar buttons
+    document.querySelectorAll('.md-tool').forEach(btn => {
+        btn.addEventListener('click', () => {
+            if (!editor) return;
+            const wrap   = btn.dataset.wrap;
+            const prefix = btn.dataset.prefix;
+            const block  = btn.dataset.block;
+            const start  = editor.selectionStart;
+            const end    = editor.selectionEnd;
+            const sel    = editor.value.substring(start, end);
+
+            let newText = '';
+            let cursorOffset = 0;
+
+            if (wrap) {
+                newText = wrap + sel + wrap;
+                cursorOffset = wrap.length;
+            } else if (prefix) {
+                newText = prefix + sel;
+                cursorOffset = prefix.length;
+            } else if (block) {
+                newText = block + '\n' + sel + '\n' + block;
+                cursorOffset = block.length + 1;
+            }
+
+            editor.value = editor.value.substring(0, start) + newText + editor.value.substring(end);
+            editor.selectionStart = start + cursorOffset;
+            editor.selectionEnd   = start + cursorOffset + sel.length;
+            editor.focus();
+            renderMarkdown();
+        });
+    });
+
+    // Copy HTML
+    copyBtn?.addEventListener('click', () => {
+        navigator.clipboard.writeText(preview?.innerHTML || '').then(() => {
+            copyBtn.textContent = 'Copied!';
+            copyBtn.classList.add('copied');
+            setTimeout(() => {
+                copyBtn.textContent = 'Copy HTML';
+                copyBtn.classList.remove('copied');
+            }, 2000);
+        });
+    });
+
+    // Initial render avec exemple
+    if (editor) {
+        editor.value = `# Welcome to Markdown Editor\n\nWrite your **markdown** here and see the *preview* on the right.\n\n## Features\n\n- Bold, italic, strikethrough\n- Lists and headings\n- Code blocks\n- Links and images\n\n\`\`\`go\nfunc main() {\n    fmt.Println("Hello, Stackriv!")\n}\n\`\`\`\n`;
+        renderMarkdown();
+    }
+}
+
+// ─── Invoice Generator ───────────────────────────────────────────────────────
+
+if (page === 'invoice') {
+    // Set today's date
+    const today = new Date().toISOString().split('T')[0];
+    const dateEl = document.getElementById('invDate');
+    if (dateEl) dateEl.value = today;
+
+    // Add item button
+    document.getElementById('addItemBtn')?.addEventListener('click', () => {
+        const container = document.getElementById('invoiceItems');
+        if (!container) return;
+        const div = document.createElement('div');
+        div.className = 'invoice-item-row';
+        div.innerHTML = `
+            <input type="text" class="form-input item-desc" placeholder="Description" />
+            <input type="number" class="form-input item-qty" placeholder="Qty" value="1" min="0" step="0.01" />
+            <input type="number" class="form-input item-price" placeholder="Unit Price" min="0" step="0.01" />
+        `;
+        container.appendChild(div);
+    });
+
+    // Generate invoice
+    document.getElementById('generateBtn')?.addEventListener('click', async () => {
+        const descs  = [...document.querySelectorAll('.item-desc')].map(el => el.value);
+        const qtys   = [...document.querySelectorAll('.item-qty')].map(el => parseFloat(el.value) || 0);
+        const prices = [...document.querySelectorAll('.item-price')].map(el => parseFloat(el.value) || 0);
+
+        const items = descs.map((desc, i) => ({
+            description: desc,
+            quantity:    qtys[i],
+            unitPrice:   prices[i],
+        })).filter(item => item.description);
+
+        try {
+            const res = await fetch('/api/invoice', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    number:   document.getElementById('invNumber')?.value || '',
+                    date:     document.getElementById('invDate')?.value || today,
+                    dueDate:  document.getElementById('invDueDate')?.value || '',
+                    currency: document.getElementById('invCurrency')?.value || 'USD',
+                    from: {
+                        name:    document.getElementById('fromName')?.value || '',
+                        email:   document.getElementById('fromEmail')?.value || '',
+                        address: document.getElementById('fromAddress')?.value || '',
+                        phone:   document.getElementById('fromPhone')?.value || '',
+                    },
+                    to: {
+                        name:    document.getElementById('toName')?.value || '',
+                        email:   document.getElementById('toEmail')?.value || '',
+                        address: document.getElementById('toAddress')?.value || '',
+                    },
+                    items,
+                    taxRate: parseFloat(document.getElementById('invTax')?.value || '0'),
+                    notes:   document.getElementById('invNotes')?.value || '',
+                }),
+            });
+
+            const data = await res.json();
+            if (data.error) { alert('Error: ' + data.error); return; }
+
+            const output = document.getElementById('output');
+            if (output) output.style.display = 'block';
+
+            const frame = document.getElementById('invoiceFrame');
+            if (frame) {
+                frame.srcdoc = data.html;
+            }
+
+            // Copy HTML
+            const copyBtn = document.getElementById('copyBtn');
+            if (copyBtn) {
+                copyBtn.onclick = () => {
+                    navigator.clipboard.writeText(data.html).then(() => {
+                        copyBtn.textContent = 'Copied!';
+                        copyBtn.classList.add('copied');
+                        setTimeout(() => {
+                            copyBtn.textContent = 'Copy HTML';
+                            copyBtn.classList.remove('copied');
+                        }, 2000);
+                    });
+                };
+            }
+
+            // Print
+            const printBtn = document.getElementById('printBtn');
+            if (printBtn) {
+                printBtn.onclick = () => {
+                    const win = window.open('', '_blank');
+                    win.document.write(data.html);
+                    win.document.close();
+                    win.print();
+                };
+            }
+        } catch (err) { console.error(err); }
+    });
 }

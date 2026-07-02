@@ -64,6 +64,9 @@
             <a href="/regex" class='nav-item {{if eq .Page "regex"}}active{{end}}'>
                 <span>🔍</span> Regex
             </a>
+            <a href="/markdown" class='nav-item {{if eq .Page "markdown"}}active{{end}}'>
+                <span>✍️</span> Markdown
+            </a>
 
             <p class="nav-section">Infrastructure</p>
             <a href="/cron" class='nav-item {{if eq .Page "cron"}}active{{end}}'>
@@ -74,6 +77,17 @@
             </a>
             <a href="/ssl" class='nav-item {{if eq .Page "ssl"}}active{{end}}'>
                 <span>🔒</span> SSL Checker
+            </a>
+            <a href="/uptime" class='nav-item {{if eq .Page "uptime"}}active{{end}}'>
+                <span>🔒</span> Uptime Monitor
+            </a>
+            <a href="/logs" class='nav-item {{if eq .Page "logs"}}active{{end}}'>
+                <span>🔒</span> Log Viewer
+            </a>
+
+            <p class="nav-section">Business</p>
+            <a href="/invoice" class='nav-item {{if eq .Page "invoice"}}active{{end}}'>
+                <span>🧾</span> Invoice
             </a>
         </nav>
     </aside>
