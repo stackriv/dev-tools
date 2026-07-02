@@ -1,0 +1,30 @@
+{{ template "base" . }}
+
+{{define "content"}}
+<div class="markdown-layout">
+    <div class="markdown-editor-pane">
+        <div class="pane-header">
+            <span class="pane-title">✏️ Editor</span>
+            <div class="markdown-tools">
+                <button class="md-tool" data-wrap="**" title="Bold">B</button>
+                <button class="md-tool" data-wrap="*" title="Italic"><em>I</em></button>
+                <button class="md-tool" data-wrap="~~" title="Strikethrough"><del>S</del></button>
+                <button class="md-tool" data-prefix="# " title="H1">H1</button>
+                <button class="md-tool" data-prefix="## " title="H2">H2</button>
+                <button class="md-tool" data-prefix="### " title="H3">H3</button>
+                <button class="md-tool" data-prefix="- " title="List">•</button>
+                <button class="md-tool" data-wrap="`" title="Code">`</button>
+                <button class="md-tool" data-block="```" title="Code block">```</button>
+            </div>
+        </div>
+        <textarea id="mdEditor" class="md-textarea" placeholder="Write your Markdown here..."></textarea>
+    </div>
+    <div class="markdown-preview-pane">
+        <div class="pane-header">
+            <span class="pane-title">👁️ Preview</span>
+            <button class="btn-copy" id="copyBtn">Copy HTML</button>
+        </div>
+        <div id="mdPreview" class="md-preview"></div>
+    </div>
+</div>
+{{end}}
